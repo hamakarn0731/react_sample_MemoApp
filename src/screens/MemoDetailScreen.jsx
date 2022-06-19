@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import {
+  View, ScrollView, Text, StyleSheet,
+} from 'react-native';
 
 import AppBar from '../components/AppBar';
 import CircleButton from '../components/CircleButton';
@@ -18,11 +20,11 @@ export default function MemoDetailScreen() {
           ・キャベツ
           ・トマト
           ・きゅうり
-          注意：スーパーは21時に閉まるので、それまでに行くこと！
+          注意・・・スーパーは21時に閉まるので、それまでに行くこと
           お米は切らしているが、特売日に買うので買わなくて大丈夫。
         </Text>
       </ScrollView>
-      <CircleButton style={{ top: 160, bottom: 'auto' }}>+</CircleButton>
+      <CircleButton style={{ top: 160, bottom: 'auto' }} name="edit-2" />
     </View>
   );
 }
