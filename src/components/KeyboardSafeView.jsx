@@ -25,11 +25,15 @@ export default function KeyboardSafeView({ children, style }) {
     // height is not supported with useNativeDriver: true
     // https://github.com/react-native-community/react-native-modal/issues/163
     if (viewHeight === initialViewHeight.current) {
-      Animated.timing(animatedViewHeight.current,
-        { toValue: initialViewHeight.current, duration: 300, useNativeDriver: false }).start();
+      Animated.timing(
+        animatedViewHeight.current,
+        { toValue: initialViewHeight.current, duration: 300, useNativeDriver: false },
+      ).start();
     } else {
-      Animated.timing(animatedViewHeight.current,
-        { toValue: viewHeight, duration: 300, useNativeDriver: false }).start();
+      Animated.timing(
+        animatedViewHeight.current,
+        { toValue: viewHeight, duration: 300, useNativeDriver: false },
+      ).start();
     }
   }, [viewHeight]);
 
