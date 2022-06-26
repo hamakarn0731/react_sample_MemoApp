@@ -1,10 +1,9 @@
-// KeyboardAvoidingViewのバグ解消用コード
-
 import React, { useRef, useState, useEffect } from 'react';
 import {
-  Keyboard, Dimensions, Animated, ViewPropTypes,
+  Keyboard, Dimensions, Animated,
 } from 'react-native';
 import { node } from 'prop-types';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 
 export default function KeyboardSafeView({ children, style }) {
   const initialViewHeight = useRef(null);
@@ -12,11 +11,11 @@ export default function KeyboardSafeView({ children, style }) {
   const [viewHeight, setViewHeight] = useState(null);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', handleShow);
-    Keyboard.addListener('keyboardDidHide', handleHide);
+    const keyboardDidShow = Keyboard.addListener('keyboardDidShow', handleShow);
+    const keyboardDidHide = Keyboard.addListener('keyboardDidHide', handleHide);
     return () => {
-      Keyboard.removeListener('keyboardDidShow', handleShow);
-      Keyboard.removeListener('keyboardDidHide', handleHide);
+      keyboardDidShow.remove();
+      keyboardDidHide.remove();
     };
   }, []);
 
