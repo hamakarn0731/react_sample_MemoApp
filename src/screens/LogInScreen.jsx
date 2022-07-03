@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, TextInput, StyleSheet, TouchableOpacity, Alert,
 } from 'react-native';
@@ -11,20 +11,22 @@ export default function LogInScreen(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handlePress() {
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const { user } = userCredential;
-        console.log(user.uid);
+  // 画面を表示した時に処理を実行（React Hooks）
+  useEffect(() => {
+    // ユーザの状態を監視
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      // ユーザがログインしていれば画面遷移（戻るボタンなし）
+      if (user) {
         navigation.reset({
           index: 0,
           routes: [{ name: 'MemoList' }],
         });
-      })
-      .catch((error) => {
-        Alert.alert(error.code);
-      });
-  }
+      }
+    });
+    // 画面遷移した時、ユーザの監視を解除
+    return unsubscribe;
+    // 画面が表示されたとき、1回のみ処理を実行
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -68,6 +70,21 @@ export default function LogInScreen(props) {
       </View>
     </View>
   );
+
+  function handlePress() {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const { user } = userCredential;
+        console.log(user.uid);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      })
+      .catch((error) => {
+        Alert.alert(error.code);
+      });
+  }
 }
 
 const styles = StyleSheet.create({
