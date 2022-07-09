@@ -5,11 +5,14 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
+import Loading from '../components/Loading';
 
 export default function LogInScreen(props) {
   const { navigation } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // ローディング状態
+  const [isLoading, setLoading] = useState(true);
 
   // 画面を表示した時に処理を実行（React Hooks）
   useEffect(() => {
@@ -21,6 +24,9 @@ export default function LogInScreen(props) {
           index: 0,
           routes: [{ name: 'MemoList' }],
         });
+      } else {
+        // ユーザがログインしていなければローディングアイコンを非表示
+        setLoading(false);
       }
     });
     // 画面遷移した時、ユーザの監視を解除
@@ -30,6 +36,7 @@ export default function LogInScreen(props) {
 
   return (
     <View style={styles.container}>
+      <Loading isLoading={isLoading} />
       <View style={styles.inner}>
         <Text style={styles.title}>Log In</Text>
         <TextInput
@@ -71,7 +78,10 @@ export default function LogInScreen(props) {
     </View>
   );
 
+  // ログイン処理
   function handlePress() {
+    // ローディング開始
+    setLoading(true);
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const { user } = userCredential;
@@ -83,6 +93,10 @@ export default function LogInScreen(props) {
       })
       .catch((error) => {
         Alert.alert(error.code);
+      })
+      .then(() => {
+        // ログインに成功しても失敗してもローディング終了
+        setLoading(false);
       });
   }
 }
