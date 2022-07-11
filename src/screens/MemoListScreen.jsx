@@ -16,12 +16,6 @@ export default function MemoListScreen(props) {
   const [memos, setMemos] = useState([]);
   // ローディング状態
   const [isLoading, setLoading] = useState(false);
-  useEffect(() => {
-    navigation.setOptions({
-      // AppBarにログアウトボタンを設置
-      headerRight: () => <LogOutButton />,
-    });
-  }, []);
 
   // 画面を表示した時に処理を実行（React Hooks）
   useEffect(() => {
@@ -59,6 +53,10 @@ export default function MemoListScreen(props) {
         // ロードの終了
         setLoading(false);
         Alert.alert('データの読み込みに失敗しました。');
+      });
+      navigation.setOptions({
+        // AppBarにログアウトボタンを設置
+        headerRight: () => <LogOutButton unsubscribe={unsubscribe} />,
       });
     }
     // コンポーネントがアンマウントされる直前にDBの監視を終了
