@@ -8,6 +8,7 @@ import firebase from 'firebase';
 
 import KeyboardSafeView from '../components/KeyboardSafeView';
 import CircleButton from '../components/CircleButton';
+import { translateErrors } from '../utils';
 
 export default function MemoEditScreen(props) {
   const { navigation, route } = props;
@@ -49,7 +50,10 @@ export default function MemoEditScreen(props) {
           navigation.goBack();
         })
         .catch((error) => {
-          Alert.alert(error.code);
+          // エラーメッセージの翻訳
+          const errorMsg = translateErrors.apply(error.code);
+          // エラーメッセージのポップアップ
+          Alert.alert(errorMsg.title, errorMsg.description);
         });
     }
   }

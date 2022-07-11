@@ -5,14 +5,19 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
+import Loading from '../components/Loading';
+import { translateErrors } from '../utils';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // ローディング状態
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <View style={styles.container}>
+      <Loading isLoading={isLoading} />
       <View style={styles.inner}>
         <Text style={styles.title}>Sign Up</Text>
         <TextInput
@@ -55,6 +60,8 @@ export default function SignUpScreen(props) {
   );
 
   function handlePress() {
+    // ローディング開始
+    setLoading(true);
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const { user } = userCredential;
@@ -66,7 +73,14 @@ export default function SignUpScreen(props) {
       })
       .catch((error) => {
         console.log(error.code, error.message);
-        Alert.alert(error.code);
+        // エラーメッセージの翻訳
+        const errorMsg = translateErrors(error.code);
+        // エラーメッセージのポップアップ
+        Alert.alert(errorMsg.title, errorMsg.description);
+      })
+      .then(() => {
+        // ログインに成功しても失敗してもローディング終了
+        setLoading(false);
       });
   }
 }
