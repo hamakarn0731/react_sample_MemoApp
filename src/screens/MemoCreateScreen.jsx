@@ -1,13 +1,14 @@
 /* 新規メモ作成画面 */
 import React, { useState } from 'react';
 import {
-  View, TextInput, StyleSheet,
+  View, TextInput, StyleSheet, Alert,
 } from 'react-native';
 
 import firebase from 'firebase';
 
 import KeyboardSafeView from '../components/KeyboardSafeView';
 import CircleButton from '../components/CircleButton';
+import { translateErrors } from '../utils';
 
 export default function MemoCreateScreen(props) {
   const { navigation } = props;
@@ -46,12 +47,12 @@ export default function MemoCreateScreen(props) {
       updatedAt: new Date(),
     })
     // 追加に成功した場合、ドキュメントへの参照からidを取得して前画面に戻る
-      .then((docRef) => {
-        console.log('Created!', docRef.id);
+      .then(() => {
         navigation.goBack();
       })
       .catch((error) => {
-        console.log('Error!', error);
+        const errorMsg = translateErrors(error.code);
+        Alert.alert(errorMsg.title, errorMsg.description);
       });
   }
 }

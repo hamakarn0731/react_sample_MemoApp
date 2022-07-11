@@ -43,7 +43,6 @@ export default function MemoListScreen(props) {
         const userMemos = [];
         // 配列に値を格納
         snapshot.forEach((doc) => {
-          console.log(doc.id, doc.data());
           const data = doc.data();
           userMemos.push({
             id: doc.id,
@@ -56,8 +55,7 @@ export default function MemoListScreen(props) {
         // ロードの終了
         setLoading(false);
         // リストの読み込みに失敗した場合の処理
-      }, (error) => {
-        console.log(error);
+      }, () => {
         // ロードの終了
         setLoading(false);
         Alert.alert('データの読み込みに失敗しました。');

@@ -63,16 +63,13 @@ export default function SignUpScreen(props) {
     // ローディング開始
     setLoading(true);
     firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const { user } = userCredential;
-        console.log(user.uid);
+      .then(() => {
         navigation.reset({
           index: 0,
           routes: [{ name: 'MemoList' }],
         });
       })
       .catch((error) => {
-        console.log(error.code, error.message);
         // エラーメッセージの翻訳
         const errorMsg = translateErrors(error.code);
         // エラーメッセージのポップアップ
