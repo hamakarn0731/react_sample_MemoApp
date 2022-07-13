@@ -1,3 +1,4 @@
+/* メモ詳細画面 */
 import React, { useEffect, useState } from 'react';
 import { shape, string } from 'prop-types';
 import {
